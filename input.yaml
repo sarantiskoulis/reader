@@ -1,0 +1,8 @@
+simulation:
+  people: 1010
+  vehicles: 100
+  countries:
+    - UK
+    - United States
+    - Germany
+    - Australia
