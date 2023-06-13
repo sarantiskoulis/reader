@@ -10,4 +10,5 @@ def _cli_outputs(yaml,writeto):
     return [yaml, writeto]
 
 if __name__ == '__main__':
+    print(_cli_outputs()[0], _cli_outputs()[1])
     FileManager(_cli_outputs()[0], _cli_outputs()[1])
