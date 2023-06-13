@@ -1,8 +1,10 @@
+
 from FileManager import FileManager
 import unittest
 import os
 import subprocess
-from Config import Config
+
+from unittest.mock import patch, call
 class TestFileManager(unittest.TestCase):
     def test_path_created(self):
         test_file = 'test.yaml'
@@ -16,13 +18,15 @@ class TestFileManager(unittest.TestCase):
     def test_print_cmd(self):
         test_file = 'test.yaml'
         test_target = 'cmd'
-        FileManager(test_file, test_target)
-        output = subprocess.check_output('dir', shell=True)
+        #parent_dir = os.path.dirname(os.getcwd())
 
-        # Decode the output and print it
-        decoded_output = output.decode('utf-8')
-        true_data = Config(test_file).read_yaml()
-        self.assertEquals(decoded_output, true_data)
+        result = subprocess.run(['python',
+                                 '../main.py',
+                                 '--yaml' ,'test.yaml',
+                                 '--writeto', 'cmd'],
+                                stdout=subprocess.PIPE)
+
+        self.assertEqual(result.stdout.decode('utf-8'),'simulation:\n  people: 1010\n')
 
 
 
