@@ -1,10 +1,10 @@
-
+from Config import Config
 from FileManager import FileManager
 import unittest
 import os
-import subprocess
+from click.testing import CliRunner
+import main
 
-from unittest.mock import patch, call
 class TestFileManager(unittest.TestCase):
     def test_path_created(self):
         test_file = 'test.yaml'
@@ -18,16 +18,22 @@ class TestFileManager(unittest.TestCase):
     def test_print_cmd(self):
         test_file = 'test.yaml'
         test_target = 'cmd'
-        #parent_dir = os.path.dirname(os.getcwd())
 
-        result = subprocess.run(['python',
-                                 '../main.py',
-                                 '--yaml' ,'test.yaml',
-                                 '--writeto', 'cmd'],
-                                stdout=subprocess.PIPE)
+        runner = CliRunner()
+        result = runner.invoke(main._cli_outputs ,
+                                ['--yamlfile', 'test.yaml', '--writeto', 'cmd'])
 
-        self.assertEqual(result.stdout.decode('utf-8'),'simulation:\n  people: 1010\n')
+        assert result.exit_code == 0
+        self.assertEqual( 'simulation:\n\n  people: 1010\n\n', result.output)
 
 
+    def test_output_newfile(self):
+        test_file = 'test.yaml'
+        test_target = 'test.json'
+        FileManager(test_file, test_target)
 
+        test_data_dic = Config('test.yaml').read_yaml()
+        true_data_dic = Config('test.json').read_yaml()
 
+        self.assertEqual(test_data_dic,true_data_dic)
+        os.remove('test.json')

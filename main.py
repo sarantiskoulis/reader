@@ -2,17 +2,19 @@ from Config import Config
 from FileManager import FileManager
 import click
 import os
+import subprocess
+import yaml
 
 @click.command()
-@click.option('--yaml')
+@click.option('--yamlfile')
 @click.option('--writeto')
 @click.option('--delete')
 
-def _cli_outputs(yaml, writeto, delete):
+def _cli_outputs(yamlfile, writeto, delete):
     if delete:
         os.remove(delete)
     else:
-        FileManager(yaml, writeto)
+        FileManager(yamlfile, writeto)
 
 
 

@@ -1,7 +1,6 @@
 import os
 import json
 from Config import Config
-import yaml
 class FileManager:
     def __init__(self, data_dir, path_write):
         self.path_write = path_write
